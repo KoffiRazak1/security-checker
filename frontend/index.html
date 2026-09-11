@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="Security Checker - Outils éducatifs de cybersécurité"
+    >
+
+    <title>Security Checker</title>
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+
+<body>
+
+    <!-- ================================
+         NAVBAR
+    ================================= -->
+
+    <header class="navbar">
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                🔐
+            </div>
+
+            <div>
+                <div class="brand-name">
+                    Security <span>Checker</span>
+                </div>
+
+                <div class="brand-tagline">
+                    Sécurité aujourd'hui, tranquillité demain.
+                </div>
+            </div>
+
+        </div>
+
+
+        <nav class="nav-links">
+
+            <a
+                href="#"
+                id="homeLink"
+                class="nav-link active"
+            >
+                🏠 Accueil
+            </a>
+
+            <a
+                href="#"
+                id="aboutLink"
+                class="nav-link"
+            >
+                ℹ️ À propos
+            </a>
+
+            <a
+                href="mailto:koffiabdoulrazak1@gmail.com"
+                class="nav-link contact-link"
+            >
+                ✉️ Contact
+
+                <small>
+                    koffiabdoulrazak1@gmail.com
+                </small>
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <main>
+
+        <!-- ================================
+             ACCUEIL
+        ================================= -->
+
+        <section
+            id="homeSection"
+            class="home-section"
+        >
+
+            <div class="hero">
+
+                <div class="hero-badge">
+                    🛡️ CYBERSÉCURITÉ POUR TOUS
+                </div>
+
+                <h1>
+                    Vos outils de
+                    <span>cybersécurité</span>
+                </h1>
+
+                <p>
+                    Des outils simples et puissants pour
+                    une meilleure sécurité en ligne.
+                </p>
+
+            </div>
+
+
+            <!-- ============================
+                 CARTES
+            ============================= -->
+
+            <div class="tools-grid">
+
+
+                <!-- PASSWORD -->
+
+                <article class="tool-card password-card">
+
+                    <div class="tool-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        Password Checker
+                    </h2>
+
+                    <p>
+                        Évaluez la robustesse d'un mot de passe
+                        et vérifiez s'il apparaît dans des
+                        fuites connues.
+                    </p>
+
+
+                    <ul class="feature-list">
+
+                        <li>
+                            Analyse de la robustesse
+                        </li>
+
+                        <li>
+                            Détection des faiblesses
+                        </li>
+
+                        <li>
+                            Vérification des fuites connues
+                        </li>
+
+                        <li>
+                            Conseils pour l'améliorer
+                        </li>
+
+                    </ul>
+
+
+                    <button
+                        id="passwordButton"
+                        class="tool-button password-button"
+                    >
+                        <span>
+                            🔎
+                            Analyser un mot de passe
+                        </span>
+
+                        <strong>→</strong>
+                    </button>
+
+                </article>
+
+
+                <!-- EMAIL -->
+
+                <article class="tool-card email-card">
+
+                    <div class="tool-icon">
+                        ✉️
+                    </div>
+
+                    <h2>
+                        Email Checker
+                    </h2>
+
+                    <p>
+                        Vérifiez si une adresse e-mail apparaît
+                        dans des violations de données connues.
+                    </p>
+
+
+                    <ul class="feature-list">
+
+                        <li>
+                            Vérification dans des bases de données
+                        </li>
+
+                        <li>
+                            Informations sur les fuites
+                        </li>
+
+                        <li>
+                            Protection de votre vie privée
+                        </li>
+
+                        <li>
+                            Résultats rapides et fiables
+                        </li>
+
+                    </ul>
+
+
+                    <button
+                        id="emailButton"
+                        class="tool-button email-button"
+                    >
+                        <span>
+                            🔎
+                            Vérifier un e-mail
+                        </span>
+
+                        <strong>→</strong>
+                    </button>
+
+                </article>
+
+
+                <!-- GENERATOR -->
+
+                <article class="tool-card generator-card">
+
+                    <div class="tool-icon">
+                        🎲
+                    </div>
+
+                    <h2>
+                        Password Generator
+                    </h2>
+
+                    <p>
+                        Générez un mot de passe aléatoire robuste
+                        avec différentes options.
+                    </p>
+
+
+                    <ul class="feature-list">
+
+                        <li>
+                            Longueur personnalisable (8 - 128)
+                        </li>
+
+                        <li>
+                            Minuscules, majuscules, chiffres, spéciaux
+                        </li>
+
+                        <li>
+                            Mot de passe sécurisé et unique
+                        </li>
+
+                        <li>
+                            Copie en un clic
+                        </li>
+
+                    </ul>
+
+
+                    <button
+                        id="generatorButton"
+                        class="tool-button generator-button"
+                    >
+                        <span>
+                            🎲
+                            Générer un mot de passe
+                        </span>
+
+                        <strong>→</strong>
+                    </button>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================
+             PASSWORD CHECKER
+        ================================= -->
+
+        <section
+            id="passwordSection"
+            class="tool-section hidden"
+        >
+
+            <button
+                id="backFromPassword"
+                class="back-button"
+            >
+                ← Retour
+            </button>
+
+
+            <div class="tool-container">
+
+                <div class="section-title">
+
+                    <div class="large-icon">
+                        🔐
+                    </div>
+
+                    <h2>
+                        Password Checker
+                    </h2>
+
+                    <p>
+                        Analysez la robustesse de votre mot de passe.
+                    </p>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="passwordInput">
+                        Mot de passe
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="passwordInput"
+                            placeholder="Entrez un mot de passe de test"
+                            autocomplete="off"
+                        >
+
+                        <button
+                            type="button"
+                            id="togglePassword"
+                            class="toggle-password"
+                        >
+                            👁️
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    id="analyzePassword"
+                    class="main-action"
+                >
+                    🔎 Analyser le mot de passe
+                </button>
+
+
+                <div
+                    id="passwordResult"
+                    class="result-box hidden"
+                >
+
+                    <div class="score-container">
+
+                        <div class="score-value">
+
+                            <span id="scoreValue">
+                                0
+                            </span>
+
+                            <small>
+                                /100
+                            </small>
+
+                        </div>
+
+                        <div
+                            id="securityLevel"
+                            class="security-level"
+                        >
+                            -
+                        </div>
+
+                    </div>
+
+
+                    <div class="progress-container">
+
+                        <div
+                            id="scoreProgress"
+                            class="progress-bar"
+                        ></div>
+
+                    </div>
+
+
+                    <div class="result-columns">
+
+                        <div class="result-section">
+
+                            <h3>
+                                🔎 Problèmes détectés
+                            </h3>
+
+                            <ul id="problemsList"></ul>
+
+                        </div>
+
+
+                        <div class="result-section">
+
+                            <h3>
+                                💡 Recommandations
+                            </h3>
+
+                            <ul id="recommendationsList"></ul>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="breachResult"
+                        class="breach-result"
+                    ></div>
+
+
+                    <div class="security-notice">
+
+                        🔒 Votre mot de passe n'est pas
+                        enregistré par l'application.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================
+             EMAIL CHECKER
+        ================================= -->
+
+        <section
+            id="emailSection"
+            class="tool-section hidden"
+        >
+
+            <button
+                id="backFromEmail"
+                class="back-button"
+            >
+                ← Retour
+            </button>
+
+
+            <div class="tool-container">
+
+                <div class="section-title">
+
+                    <div class="large-icon">
+                        ✉️
+                    </div>
+
+                    <h2>
+                        Email Checker
+                    </h2>
+
+                    <p>
+                        Vérifiez les violations de données connues.
+                    </p>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="emailInput">
+                        Adresse e-mail
+                    </label>
+
+                    <input
+                        type="email"
+                        id="emailInput"
+                        placeholder="exemple@email.com"
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <button
+                    id="checkEmail"
+                    class="main-action"
+                >
+                    🔎 Vérifier l'e-mail
+                </button>
+
+
+                <div
+                    id="emailResult"
+                    class="result-box hidden"
+                >
+
+                    <h3 id="emailResultTitle">
+                        📧 Vérification
+                    </h3>
+
+                    <div id="emailResultMessage">
+                        -
+                    </div>
+
+                </div>
+
+
+                <div class="security-notice">
+
+                    🔒 Nous ne rechercherons jamais les
+                    mots de passe associés à une adresse e-mail.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================
+             GENERATEUR
+        ================================= -->
+
+        <section
+            id="generatorSection"
+            class="tool-section hidden"
+        >
+
+            <button
+                id="backFromGenerator"
+                class="back-button"
+            >
+                ← Retour
+            </button>
+
+
+            <div class="tool-container">
+
+                <div class="section-title">
+
+                    <div class="large-icon">
+                        🎲
+                    </div>
+
+                    <h2>
+                        Password Generator
+                    </h2>
+
+                    <p>
+                        Générez un mot de passe aléatoire sécurisé.
+                    </p>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="passwordLength">
+
+                        Longueur :
+
+                        <strong id="passwordLengthValue">
+                            16
+                        </strong>
+
+                    </label>
+
+
+                    <input
+                        type="range"
+                        id="passwordLength"
+                        min="8"
+                        max="128"
+                        value="16"
+                    >
+
+                </div>
+
+
+                <div class="generator-options">
+
+                    <label>
+                        <input
+                            type="checkbox"
+                            id="useLowercase"
+                            checked
+                        >
+                        🔤 Minuscules
+                    </label>
+
+
+                    <label>
+                        <input
+                            type="checkbox"
+                            id="useUppercase"
+                            checked
+                        >
+                        🔠 Majuscules
+                    </label>
+
+
+                    <label>
+                        <input
+                            type="checkbox"
+                            id="useDigits"
+                            checked
+                        >
+                        🔢 Chiffres
+                    </label>
+
+
+                    <label>
+                        <input
+                            type="checkbox"
+                            id="useSpecial"
+                            checked
+                        >
+                        🔣 Spéciaux
+                    </label>
+
+                </div>
+
+
+                <div class="generated-password-box">
+
+                    <input
+                        type="text"
+                        id="generatedPassword"
+                        readonly
+                        placeholder="Votre mot de passe apparaîtra ici"
+                    >
+
+                    <button
+                        type="button"
+                        id="copyPassword"
+                        class="copy-button"
+                    >
+                        📋 Copier
+                    </button>
+
+                </div>
+
+
+                <button
+                    id="generatePassword"
+                    class="main-action generator-action"
+                >
+                    🎲 Générer
+                </button>
+
+
+                <div class="security-notice">
+
+                    🔒 Le mot de passe généré n'est pas
+                    enregistré par l'application.
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================
+             A PROPOS
+        ================================= -->
+
+        <section
+            id="aboutSection"
+            class="tool-section hidden"
+        >
+
+            <button
+                id="backFromAbout"
+                class="back-button"
+            >
+                ← Retour
+            </button>
+
+
+            <div class="tool-container about-container">
+
+                <div class="section-title">
+
+                    <div class="large-icon">
+                        🛡️
+                    </div>
+
+                    <h2>
+                        À propos de Security Checker
+                    </h2>
+
+                </div>
+
+
+                <p>
+                    Security Checker est un projet éducatif
+                    consacré à la cybersécurité et à la protection
+                    des utilisateurs en ligne.
+                </p>
+
+
+                <p>
+                    L'application permet d'analyser les mots de passe,
+                    vérifier les violations connues et générer des
+                    mots de passe robustes.
+                </p>
+
+
+                <div class="security-notice">
+
+                    🔒 La confidentialité est au cœur du projet.
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================================
+         FOOTER
+    ================================= -->
+
+    <footer>
+
+        <p>
+            © 2026 Security Checker.
+            Projet éducatif de cybersécurité.
+        </p>
+
+        <p>
+            ❤️ Sécurisons ensemble le web.
+        </p>
+
+        <a href="mailto:koffiabdoulrazak1@gmail.com">
+            ✉️ koffiabdoulrazak1@gmail.com
+        </a>
+
+    </footer>
+
+
+    <script src="/script.js"></script>
+
+</body>
+
+</html>

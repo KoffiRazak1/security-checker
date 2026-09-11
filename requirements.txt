@@ -1,0 +1,7 @@
+Flask
+python-telegram-bot
+zxcvbn
+python-dotenv
+flask-limiter
+requests
+gunicorn
