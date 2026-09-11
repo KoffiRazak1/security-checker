@@ -1,21 +1,14 @@
-import os
-from urllib.parse import quote
-
 import requests
-from dotenv import load_dotenv
-
-
-load_dotenv()
-
-
-HIBP_API_URL = (
-    "https://haveibeenpwned.com/api/v3/breachedaccount"
-)
+from urllib.parse import quote
 
 
 # ============================================================
 # CONFIGURATION
 # ============================================================
+
+XPOSEDORNOT_API_URL = (
+    "https://api.xposedornot.com/v1/check-email"
+)
 
 REQUEST_TIMEOUT = 10
 MAX_EMAIL_LENGTH = 254
@@ -70,12 +63,12 @@ def is_valid_email(email):
 def check_email_breach(email):
     """
     Vérifie si une adresse e-mail apparaît dans
-    les violations de données connues par HIBP.
+    les violations connues par XposedOrNot.
 
     Sécurité :
     - aucune sauvegarde locale de l'adresse ;
     - aucune écriture dans les logs ;
-    - clé API uniquement récupérée depuis .env ;
+    - requête effectuée côté serveur ;
     - timeout réseau ;
     - erreurs réseau transformées en erreurs génériques.
     """
@@ -102,64 +95,44 @@ def check_email_breach(email):
         )
 
     # --------------------------------------------------------
-    # CLÉ API
-    # --------------------------------------------------------
-
-    api_key = os.getenv("HIBP_API_KEY")
-
-    if not api_key:
-        raise RuntimeError(
-            "La clé API HIBP n'est pas configurée."
-        )
-
-    # --------------------------------------------------------
-    # CONSTRUCTION DE L'URL HIBP
+    # ENCODAGE DE L'EMAIL
     # --------------------------------------------------------
 
     encoded_email = quote(email, safe="")
 
-    url = f"{HIBP_API_URL}/{encoded_email}"
+    url = f"{XPOSEDORNOT_API_URL}/{encoded_email}"
 
     # --------------------------------------------------------
-    # REQUÊTE HIBP
+    # REQUÊTE XPOSEDORNOT
     # --------------------------------------------------------
 
     try:
 
         response = requests.get(
             url,
-            params={
-                "truncateResponse": "true"
-            },
-            headers={
-                "hibp-api-key": api_key,
-                "user-agent": (
-                    "Password-Email-Security-Checker"
-                )
-            },
             timeout=REQUEST_TIMEOUT
         )
 
     except requests.exceptions.Timeout as error:
 
         raise RuntimeError(
-            "Le service HIBP a mis trop de temps à répondre."
+            "Le service de vérification a mis trop de temps à répondre."
         ) from error
 
     except requests.exceptions.ConnectionError as error:
 
         raise RuntimeError(
-            "Impossible de contacter le service HIBP."
+            "Impossible de contacter le service de vérification."
         ) from error
 
     except requests.exceptions.RequestException as error:
 
         raise RuntimeError(
-            "Une erreur réseau est survenue avec HIBP."
+            "Une erreur réseau est survenue pendant la vérification."
         ) from error
 
     # --------------------------------------------------------
-    # RÉPONSE HIBP
+    # RÉPONSE HTTP
     # --------------------------------------------------------
 
     if response.status_code == 404:
@@ -169,22 +142,10 @@ def check_email_breach(email):
             "breaches": []
         }
 
-    if response.status_code == 401:
-
-        raise RuntimeError(
-            "La clé API HIBP est invalide ou non autorisée."
-        )
-
-    if response.status_code == 403:
-
-        raise RuntimeError(
-            "La requête vers HIBP n'est pas autorisée."
-        )
-
     if response.status_code == 429:
 
         raise RuntimeError(
-            "Trop de requêtes vers HIBP. Réessayez plus tard."
+            "Trop de vérifications. Réessayez plus tard."
         )
 
     try:
@@ -194,7 +155,7 @@ def check_email_breach(email):
     except requests.exceptions.HTTPError as error:
 
         raise RuntimeError(
-            "Le service HIBP a retourné une erreur."
+            "Le service de vérification a retourné une erreur."
         ) from error
 
     # --------------------------------------------------------
@@ -203,40 +164,76 @@ def check_email_breach(email):
 
     try:
 
-        breaches = response.json()
+        data = response.json()
 
     except ValueError as error:
 
         raise RuntimeError(
-            "La réponse du service HIBP est invalide."
+            "La réponse du service de vérification est invalide."
         ) from error
 
-    if not isinstance(breaches, list):
+    if not isinstance(data, dict):
 
         raise RuntimeError(
-            "La réponse du service HIBP est inattendue."
+            "La réponse du service de vérification est inattendue."
         )
 
     # --------------------------------------------------------
-    # EXTRACTION DES INFORMATIONS
+    # AUCUNE VIOLATION
     # --------------------------------------------------------
+
+    if data.get("Error") == "Not found":
+
+        return {
+            "found": False,
+            "breaches": []
+        }
+
+    # --------------------------------------------------------
+    # VIOLATIONS TROUVÉES
+    # --------------------------------------------------------
+
+    raw_breaches = data.get("breaches", [])
+
+    if not isinstance(raw_breaches, list):
+
+        raise RuntimeError(
+            "Les données de violation reçues sont invalides."
+        )
 
     results = []
 
-    for breach in breaches:
+    for breach in raw_breaches:
 
-        if not isinstance(breach, dict):
+        # Format XposedOrNot :
+        # ["NomDeLaViolation"]
+
+        if isinstance(breach, list) and breach:
+
+            name = breach[0]
+
+        elif isinstance(breach, str):
+
+            name = breach
+
+        else:
+
+            continue
+
+        if not isinstance(name, str):
+            continue
+
+        name = name.strip()
+
+        if not name:
             continue
 
         results.append({
-            "name": breach.get("Name"),
-            "title": breach.get("Title"),
-            "domain": breach.get("Domain"),
-            "breach_date": breach.get("BreachDate"),
-            "data_classes": breach.get(
-                "DataClasses",
-                []
-            )
+            "name": name,
+            "title": None,
+            "domain": None,
+            "breach_date": None,
+            "data_classes": []
         })
 
     # --------------------------------------------------------
