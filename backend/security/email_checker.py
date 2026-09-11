@@ -1,4 +1,5 @@
 import os
+from urllib.parse import quote
 
 import requests
 from dotenv import load_dotenv
@@ -112,13 +113,21 @@ def check_email_breach(email):
         )
 
     # --------------------------------------------------------
+    # CONSTRUCTION DE L'URL HIBP
+    # --------------------------------------------------------
+
+    encoded_email = quote(email, safe="")
+
+    url = f"{HIBP_API_URL}/{encoded_email}"
+
+    # --------------------------------------------------------
     # REQUÊTE HIBP
     # --------------------------------------------------------
 
     try:
 
         response = requests.get(
-            HIBP_API_URL,
+            url,
             params={
                 "truncateResponse": "true"
             },
@@ -229,6 +238,10 @@ def check_email_breach(email):
                 []
             )
         })
+
+    # --------------------------------------------------------
+    # RÉSULTAT FINAL
+    # --------------------------------------------------------
 
     return {
         "found": len(results) > 0,
